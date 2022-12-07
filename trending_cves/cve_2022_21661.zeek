@@ -24,7 +24,6 @@ function con_limit(c:connection){
 event http_entity_data (c: connection, is_orig: bool, length: count, data: string)
 
 {
-	# print(c$duration);
 	local user_info = match_pattern(c$http$uri,/\/wp-admin\/admin-ajax\.php\?action=ecsload/);
 	if(user_info$matched)
 	{
@@ -33,7 +32,7 @@ event http_entity_data (c: connection, is_orig: bool, length: count, data: strin
 	local data_match_pattern:string="query";
 	if(data_match_pattern in data) 
 	{
-		local terms_match=match_pattern(data,/terms.*or.if.*select/);
+		local terms_match=match_pattern(data,/terms\S+\+or\+if\S+select/);
 		if(terms_match$matched)
 		{
 			NOTICE([$note=cve_2022_21661_exploit_detection,
